@@ -67,8 +67,10 @@ fn bench_impl<T: Ord + std::fmt::Debug, Sort: sort_test_tools::Sort>(
 
     if env::var("MEASURE_COMP").is_ok() {
         // Configure this to filter results. For now the only real difference is copy types.
-        // if transform_name == "i32" && bench_name.contains("unstable") && test_size <= 100000 {
-        if transform_name == "u64" && test_size >= 1_000_000 {
+        if transform_name == "i32"
+            && (bench_name.contains("driftsort")/*|| bench_name.contains("rust_std")*/)
+            && test_size == 10000
+        {
             // Abstracting over sort_by is kinda tricky without HKTs so a macro will do.
             let name = format!(
                 "{}-comp-{}-{}-{}",
@@ -453,6 +455,17 @@ fn bench_patterns<T: Ord + std::fmt::Debug>(
             pattern_name,
             pattern_provider,
             stable::rust_glidesort::SortImpl,
+        );
+
+        #[cfg(feature = "rust_driftsort")]
+        bench_impl(
+            c,
+            test_size,
+            transform_name,
+            &transform,
+            pattern_name,
+            pattern_provider,
+            stable::rust_driftsort::SortImpl,
         );
 
         #[cfg(feature = "rust_tinysort")]

@@ -101,6 +101,8 @@ def build_color_palette():
         "cpp_vqsort": palette[6],
         "cpp_intel_avx512": palette[7],
         "singeli_singelisort": palette[3],
+
+        "rust_driftsort_stable": palette[5],
     }
 
     return pinned_colors
